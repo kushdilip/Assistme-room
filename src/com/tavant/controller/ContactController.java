@@ -61,7 +61,7 @@ public class ContactController {
 			contact.setUserId(user.getUserId());
 			contactService.addContact(contact);
 			model.addAttribute(contact);
-			return new ModelAndView("redirect:showContacts.html",model);
+			return new ModelAndView("redirect:showContacts.html", model);
 		}
 	}
 

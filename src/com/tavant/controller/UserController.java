@@ -1,5 +1,7 @@
 package com.tavant.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +15,29 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tavant.domain.Contact;
 import com.tavant.domain.User;
+import com.tavant.services.ContactService;
 import com.tavant.services.UserService;
 import com.tavant.validator.LoginValidator;
 import com.tavant.validator.RegistrationValidator;
 
 @Controller
-@SessionAttributes("currentUser")
+@SessionAttributes({"currentUser","contactsList"})
 public class UserController {
 	private UserService userService;
+	private ContactService contactService;
 	private LoginValidator loginValidator;
 	private RegistrationValidator regisValidator;
-
+	
+	
 	@Autowired
-	public UserController(UserService userService,
+	public UserController(UserService userService,ContactService contactService,
 			LoginValidator loginValidator, RegistrationValidator regisValidator) {
 		this.userService = userService;
 		this.loginValidator = loginValidator;
 		this.regisValidator = regisValidator;
+		this.contactService = contactService;
 
 	}
 
@@ -76,23 +83,17 @@ public class UserController {
 			return new ModelAndView("master");
 		}
 
-		// System.out.println("i'm from login controller " + user);
-		// User currentUser = userService.selectByEmailId(user.getemailId());
+		//setting up session attribute currentUser
 		User currentUser = loginValidator.getValidUser();
-		// System.out.println("from login controller, valid user: " +
-		// currentUser);
-
 		request.getSession().setAttribute("currentUser", currentUser);
-		return new ModelAndView("redirect:home.html");
 
-		// if (currentUser != null
-		// && currentUser.getPassword().equals(user.getPassword())) {
-		// request.getSession().setAttribute("currentUser", currentUser);
-		// return new ModelAndView("redirect:home.html");
-		//
-		// } else {
-		// return new ModelAndView("master");
-		// }
+		//setting up session attribute contactList
+		List<Contact> contactsList = contactService
+				.selectAllContacts(currentUser.getUserId());
+		request.getSession().setAttribute("contactsList", contactsList);
+		
+		
+		return new ModelAndView("redirect:home.html");		
 	}
 
 	@RequestMapping("/logout")

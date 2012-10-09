@@ -34,7 +34,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${contactList}" var="cntct" varStatus="loop">
+					<c:forEach items="${contactsList}" var="cntct" varStatus="loop">
 
 						<tr>
 							<td><c:out value="${loop.index + 1}" /></td>
@@ -61,8 +61,8 @@
 		</div>
 
 
-
-		<jsp:include page="../common/footer.jsp"></jsp:include>
+	</div>
+	<jsp:include page="../common/footer.jsp"></jsp:include>
 
 
 </body>
