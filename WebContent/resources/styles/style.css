@@ -1,0 +1,11 @@
+@CHARSET "ISO-8859-1";
+
+h1 {
+	color: green;
+}
+
+body {
+	background-image: url("/AssistMe/resources/images/master_background.jpg");
+/* 	background-color: gray;
+ */
+ }
